@@ -35,9 +35,9 @@ const User = new mongoose.Schema({
     type: String,
     required: true,
   },
-  roles: {
-    type: rel,
-    ref: "Roles",
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branches",
   },
 });
 

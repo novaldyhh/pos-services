@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const rel = mongoose.Schema.Types.ObjectId;
 
 const Branch = new mongoose.Schema({
-  company: {
+  branchName: {
     type: String,
     required: true,
   },
@@ -10,11 +10,9 @@ const Branch = new mongoose.Schema({
     type: String,
     required: true,
   },
-  users: [
-    {
-      type: rel,
-      ref: "Users",
-    },
-  ],
+  phone: {
+    type: String,
+    required: true,
+  },
 });
 module.exports = mongoose.model("Branches", Branch);
