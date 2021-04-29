@@ -14,5 +14,18 @@ const Branch = new mongoose.Schema({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  postalCode: {
+    type: String,
+  },
+  isOpen: {
+    type: Boolean,
+    required: true,
+  },
 });
 module.exports = mongoose.model("Branches", Branch);

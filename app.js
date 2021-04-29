@@ -17,11 +17,13 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const BranchController = require("./Controller/BranchController.js");
-const UserController = require("./Controller/UserController.js");
+const BranchController = require("./Controller/BranchController");
+const UserController = require("./Controller/UserController");
+const RoleController = require("./Controller/RoleController");
 
 app.use("/branch", BranchController);
 app.use("/user", UserController);
+app.use("/role", RoleController);
 
 app.listen(activePort, () => {
   console.log("Server is running in " + activePort);

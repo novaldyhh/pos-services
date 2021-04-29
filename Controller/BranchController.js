@@ -6,6 +6,10 @@ router.post("/add", async (req, res) => {
     branchName: req.body.branchName,
     isMainBranch: req.body.branchName,
     phone: req.body.phone,
+    email: req.body.email,
+    address: req.body.address,
+    isOpen: req.body.isOpen,
+    postalCode: req.body.postalCode,
   });
   try {
     const saved = await branch.save();
@@ -23,6 +27,20 @@ router.get("/get", function (req, res, next) {
     .catch((err) => {
       res.send("error: " + err);
       console.log(err);
+    });
+});
+
+router.get("/get/:id", function (req, res, next) {
+  Branch.findOne({ _id: req.params.id })
+    .then((branch) => {
+      if (branch) {
+        res.json(branch);
+      } else {
+        res.send("No Data Found");
+      }
+    })
+    .catch((err) => {
+      res.send(err);
     });
 });
 
@@ -44,6 +62,25 @@ router.put("/edit/:id", function (req, res) {
       branchName: req.body.branchName,
       isMainBranch: req.body.branchName,
       phone: req.body.phone,
+      email: req.body.email,
+      address: req.body.address,
+      isOpen: req.body.isOpen,
+      postalCode: req.body.postalCode,
+    }
+  )
+    .then(() => {
+      res.json(req.body);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+router.put("/close/:id", function (req, res) {
+  Branch.updateOne(
+    { _id: req.params.id },
+    {
+      isOpen: req.body.isOpen,
     }
   )
     .then(() => {

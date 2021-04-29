@@ -1,11 +1,29 @@
 const router = require("express").Router();
 const User = require("../Model/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const key = process.env.KEY;
 
 router.post("/add", async (req, res) => {
-  console.log(req.branch);
+  const verifyUsername = await User.findOne({ username: req.body.username });
+  if (verifyUsername) return res.status(400).send("Username Gaboleh Sama");
+
+  const salt = await bcrypt.genSalt(10);
+  var hash = null;
+  if (req.body.password) {
+    hash = await bcrypt.hash(req.body.password, salt);
+  }
   const user = new User({
-    ...req.body,
+    isAdmin: req.body.isAdmin,
+    isActive: req.body.isActive,
+    username: req.body.username,
+    password: hash,
+    email: req.body.email,
+    phone: req.body.phone,
+    address: req.body.address,
+    name: req.body.name,
     branch: req.branch,
+    role: req.role,
   });
   try {
     const saved = await user.save();
@@ -13,6 +31,31 @@ router.post("/add", async (req, res) => {
   } catch (err) {
     res.status(400).send(req.body);
   }
+});
+
+router.get("/get", function (req, res, next) {
+  User.find()
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      res.send("error: " + err);
+      console.log(err);
+    });
+});
+
+router.post("/login", async (req, res) => {
+  const username = await User.findOne({ username: req.body.username });
+  if (!username) return res.status(400).send("Login Gagal");
+
+  const checkPassword = await bcrypt.compare(
+    req.body.password,
+    username.password
+  );
+  if (!checkPassword) return res.status(400).send("Login Gagal");
+
+  const token = jwt.sign({ _id: username.id }, key);
+  res.header("Barrier-Token", token).send(token);
 });
 
 module.exports = router;
