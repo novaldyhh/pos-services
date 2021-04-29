@@ -1,0 +1,32 @@
+{
+  "UserEntities": [
+    {
+      "isAdmin": true,
+      "isActive": true,
+      "username": "admin",
+      "password": "admin",
+      "email": "admin@admin.com",
+      "phone": "08122190899",
+      "address": "Semarang",
+      "name": "Admin",
+      "branch": "607db9d1ae030521e9b6c895",
+      "role": "608af70829edde638d5e6e8c"
+    }
+  ],
+  "BranchEntities": [
+    {
+      "branchName": "Main Branch",
+      "isMainBranch": true,
+      "phone": "08989898298298",
+      "email": "main@branch.com",
+      "address": "sikunir",
+      "postalCode": "50552",
+      "isOpen": true
+    }
+  ],
+  "RoleEntities": [
+    {
+      "role": "Super Admin"
+    }
+  ]
+}
