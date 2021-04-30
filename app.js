@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 const activePort = process.env.ACTIVE_PORT || 8080;
@@ -13,7 +13,7 @@ mongoose
   .catch((e) => console.log("Connection Interrupted" + e));
 
 // app.use(cors(corsOptions));
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -27,5 +27,6 @@ const Branch = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
 });
 module.exports = mongoose.model("Branches", Branch);

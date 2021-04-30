@@ -6,5 +6,6 @@ const Role = new mongoose.Schema({
     type: String,
     required: true,
   },
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
 });
 module.exports = mongoose.model("Roles", Role);

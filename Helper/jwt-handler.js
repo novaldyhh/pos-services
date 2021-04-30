@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-const key =
-  "tbgfdyixldpxseciqiieehadomwzxugrfekbmpuscldmkzdnyvzdaxosdydjioflojygamkjvyytqreqekieaikdwqcgcamovlzctmnbwxcruergmjionlpgalpvguteguirvpoyvfimujqcfvgzxjboietvvv";
+const key = process.env.KEY;
 
 module.exports = function auth(req, res, next) {
   const token = req.header("Barrier-Token");
