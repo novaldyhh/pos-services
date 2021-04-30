@@ -60,26 +60,4 @@ router.post("/login", async (req, res) => {
   res.header("Barrier-Token", token).send(token);
 });
 
-// router.post("/login", async (req, res) => {
-//   User.findOne({
-//     where: { username: req.body.username },
-//   })
-//     .then((router) => {
-//       console.log(router);
-//       if (router) {
-//         if (bcrypt.compareSync(req.body.password, router.password)) {
-//           let token = jwt.sign(router.dataValues, process.env.KEY, {
-//             expiresIn: 1440,
-//           });
-//           res.send(token);
-//         }
-//       } else {
-//         res.status(400).json({ error: req.body.username + " Tidak Terdaftar" });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(400).json({ error: err });
-//     });
-// });
-
 module.exports = router;
