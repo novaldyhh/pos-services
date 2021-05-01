@@ -28,5 +28,13 @@
     {
       "role": "Super Admin"
     }
+  ],
+  "SupplierEntities": [
+    {
+      "supplierName": "Supplier 1",
+      "email": "email@suplier.com",
+      "phone": "08122190899",
+      "address": "Semarang"
+    }
   ]
 }

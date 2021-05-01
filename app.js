@@ -12,18 +12,23 @@ mongoose
   .then(() => console.log("DB Connected"))
   .catch((e) => console.log("Connection Interrupted" + e));
 
+const corsOptions = {
+  exposeHeaders: "Authorization",
+};
 // app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const BranchController = require("./Controller/BranchController");
 const UserController = require("./Controller/UserController");
 const RoleController = require("./Controller/RoleController");
+const SupplierController = require("./Controller/SupplierController");
 
 app.use("/branch", BranchController);
 app.use("/user", UserController);
 app.use("/role", RoleController);
+app.use("/supplier", SupplierController);
 
 app.listen(activePort, () => {
   console.log("Server is running in " + activePort);

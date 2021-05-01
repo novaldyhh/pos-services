@@ -4,7 +4,7 @@ const Branch = require("../Model/Branch");
 router.post("/add", async (req, res) => {
   const branch = new Branch({
     branchName: req.body.branchName,
-    isMainBranch: req.body.branchName,
+    isMainBranch: req.body.isMainBranch,
     phone: req.body.phone,
     email: req.body.email,
     address: req.body.address,

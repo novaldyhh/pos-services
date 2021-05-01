@@ -7,7 +7,7 @@ const Branch = new mongoose.Schema({
     required: true,
   },
   isMainBranch: {
-    type: String,
+    type: Boolean,
     required: true,
   },
   phone: {

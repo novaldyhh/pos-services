@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const Role = require("../Model/Role");
+const Supplier = require("../Model/Supplier");
 
 router.post("/add", async (req, res) => {
-  const role = new Role({
+  const supplier = new Supplier({
     ...req.body,
   });
   try {
-    const saved = await role.save();
+    const saved = await supplier.save();
     res.send(saved);
   } catch (err) {
     res.status(400).send(req.body);
@@ -14,9 +14,9 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/get", function (req, res, next) {
-  Role.find()
-    .then((role) => {
-      res.json(role);
+  Supplier.find()
+    .then((supplier) => {
+      res.json(supplier);
     })
     .catch((err) => {
       res.send("error: " + err);
@@ -25,10 +25,10 @@ router.get("/get", function (req, res, next) {
 });
 
 router.get("/get/:id", function (req, res, next) {
-  Role.findOne({ _id: req.params.id })
-    .then((role) => {
-      if (role) {
-        res.json(role);
+  Supplier.findOne({ _id: req.params.id })
+    .then((supplier) => {
+      if (supplier) {
+        res.json(supplier);
       } else {
         res.send("No Data Found");
       }
@@ -39,7 +39,7 @@ router.get("/get/:id", function (req, res, next) {
 });
 
 router.delete("/delete/:id", function (req, res) {
-  Role.deleteOne({ _id: req.params.id })
+  Supplier.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });
     })
