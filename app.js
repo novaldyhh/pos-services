@@ -24,11 +24,13 @@ const BranchController = require("./Controller/BranchController");
 const UserController = require("./Controller/UserController");
 const RoleController = require("./Controller/RoleController");
 const SupplierController = require("./Controller/SupplierController");
+const ItemsController = require("./Controller/itemsController");
 
 app.use("/branch", BranchController);
 app.use("/user", UserController);
 app.use("/role", RoleController);
 app.use("/supplier", SupplierController);
+app.use("/items", ItemsController);
 
 app.listen(activePort, () => {
   console.log("Server is running in " + activePort);

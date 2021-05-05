@@ -41,10 +41,9 @@ router.post("/add", async (req, res) => {
 
 router.get("/get", function (req, res, next) {
   User.find()
-    .populate("Branches")
-    .exec()
     .then((user) => {
       res.json(user);
+      next();
     })
     .catch((err) => {
       res.send("error: " + err);
@@ -59,6 +58,21 @@ router.delete("/delete/:id", function (req, res) {
     .catch((err) => {
       res.send("error: " + err);
       console.log(err);
+    });
+});
+
+router.get("/get/:id", function (req, res, next) {
+  User.findOne({ _id: req.params.id })
+    .then((user) => {
+      if (user) {
+        res.json(user);
+        next();
+      } else {
+        res.send("No Data Found");
+      }
+    })
+    .catch((err) => {
+      res.send(err);
     });
 });
 
@@ -82,6 +96,7 @@ router.post("/login", async (req, res) => {
   res.json({
     token: token,
     role: role.role,
+    branchId: branchId,
     branch: branch.branchName,
     mainBranch: branch.isMainBranch,
   });

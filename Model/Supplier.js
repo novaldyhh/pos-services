@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = require("mongoose");
 
 const Supplier = new mongoose.Schema({
   supplierName: {
@@ -15,5 +16,12 @@ const Supplier = new mongoose.Schema({
   address: {
     type: String,
   },
+  supplier: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Items",
+      required: true,
+    },
+  ],
 });
 module.exports = mongoose.model("Suppliers", Supplier);

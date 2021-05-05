@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const rel = mongoose.Schema.Types.ObjectId;
+const { Schema } = require("mongoose");
 
 const Branch = new mongoose.Schema({
   branchName: {
@@ -27,6 +27,8 @@ const Branch = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+  users: [{ type: Schema.Types.ObjectId, ref: "Users" }],
+  items: [{ type: Schema.Types.ObjectId, ref: "Items" }],
 });
+
 module.exports = mongoose.model("Branches", Branch);

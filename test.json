@@ -36,5 +36,20 @@
       "phone": "08122190899",
       "address": "Semarang"
     }
+  ],
+  "ItemsEntities": [
+    {
+      "serialNumber": "1203810230190123",
+      "barcode": "910920130012",
+      "itemName": "Ram",
+      "category": "Sparepart PC",
+      "subCategory": "Media Penyimpanan",
+      "brand": "Kingstone",
+      "supplier": "Sales Kingstone",
+      "quantity": 20,
+      "branch": "608dd36b9db7cc13cbcd749e",
+      "price": 300000,
+      "totalValue": 600000
+    }
   ]
 }

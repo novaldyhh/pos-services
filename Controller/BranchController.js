@@ -1,17 +1,10 @@
 const router = require("express").Router();
 const Branch = require("../Model/Branch");
+const Item = require("../Model/Items");
 
 router.post("/add", async (req, res) => {
-  const branch = new Branch({
-    branchName: req.body.branchName,
-    isMainBranch: req.body.isMainBranch,
-    phone: req.body.phone,
-    email: req.body.email,
-    address: req.body.address,
-    isOpen: req.body.isOpen,
-    postalCode: req.body.postalCode,
-  });
   try {
+    const branch = new Branch(req.body);
     const saved = await branch.save();
     res.send(saved);
   } catch (err) {
