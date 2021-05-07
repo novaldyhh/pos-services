@@ -10,32 +10,40 @@ router.post("/add", async (req, res) => {
   const verifyUsername = await User.findOne({ username: req.body.username });
   if (verifyUsername) {
     const isAdmin = verifyUsername.isAdmin;
-    if (verifyUsername && isAdmin)
-      return res.status(400).send("Username Gaboleh Sama");
+    if (verifyUsername && isAdmin) return res.status(400).send("Username Gaboleh Sama");
   }
-
-  const salt = await bcrypt.genSalt(10);
-  var hash = null;
-  if (req.body.password) {
-    hash = await bcrypt.hash(req.body.password, salt);
-  }
-  const user = new User({
-    isAdmin: req.body.isAdmin,
-    isActive: req.body.isActive,
-    username: req.body.username,
-    password: hash,
-    email: req.body.email,
-    phone: req.body.phone,
-    address: req.body.address,
-    name: req.body.name,
-    branch: req.body.branch,
-    role: req.body.role,
-  });
   try {
-    const saved = await user.save();
-    res.send(saved);
+    console.log("Running Service");
+    const salt = await bcrypt.genSalt(10);
+    var hash = null;
+    if (req.body.password) {
+      hash = await bcrypt.hash(req.body.password, salt);
+    }
+    const user = new User({
+      isAdmin: req.body.isAdmin,
+      isActive: req.body.isActive,
+      username: req.body.username,
+      password: hash,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: req.body.address,
+      name: req.body.name,
+      branch: req.body.branch,
+      role: req.body.role,
+    });
+    await user.save();
+
+    const branch = await Branch.findById({ _id: user.branch });
+    branch.users.push(user);
+    await branch.save();
+
+    const role = await Role.findById({ _id: user.role });
+    role.users.push(user);
+    await role.save();
+
+    res.status(201).json({ messages: "User Ditambahkan", data: user });
   } catch (err) {
-    res.status(400).send(req.body);
+    res.status(400).send("DB Error");
   }
 });
 
@@ -86,10 +94,7 @@ router.post("/login", async (req, res) => {
   const role = await Role.findOne({ _id: roleId }).populate("Roles");
   const branch = await Branch.findOne({ _id: branchId }).populate("Branch");
 
-  const checkPassword = await bcrypt.compare(
-    req.body.password,
-    username.password
-  );
+  const checkPassword = await bcrypt.compare(req.body.password, username.password);
   if (!checkPassword) return res.status(400).send("Login Gagal");
 
   const token = jwt.sign({ _id: username.id }, key);

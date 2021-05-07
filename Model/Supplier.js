@@ -16,7 +16,7 @@ const Supplier = new mongoose.Schema({
   address: {
     type: String,
   },
-  supplier: [
+  items: [
     {
       type: Schema.Types.ObjectId,
       ref: "Items",

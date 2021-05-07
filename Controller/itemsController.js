@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const Branch = require("../Model/Branch");
+const Brand = require("../Model/Brand");
+const Category = require("../Model/Category");
 const Items = require("../Model/Items");
+const SubCategory = require("../Model/SubCategory");
+const Supplier = require("../Model/Supplier");
 
 router.post("/add", async (req, res) => {
   try {
@@ -11,13 +15,29 @@ router.post("/add", async (req, res) => {
     branch.items.push(item);
     await branch.save();
 
+    const brand = await Brand.findById({ _id: item.brand });
+    brand.items.push(item);
+    await brand.save();
+
+    const category = await Category.findById({ _id: item.category });
+    category.items.push(item);
+    await category.save();
+
+    const subCategory = await SubCategory.findById({ _id: item.subCategory });
+    subCategory.items.push(item);
+    await subCategory.save();
+
+    const supplier = await Supplier.findById({ _id: item.supplier });
+    supplier.items.push(item);
+    await supplier.save();
+
     res.status(201).json({ messages: "Produk Ditambahkan", data: item });
   } catch (err) {
     res.status(400);
   }
 });
 
-router.get("/get/:id", async (req, res, next) => {
+router.get("/list/:id", async (req, res, next) => {
   try {
     await Branch.findById({ _id: req.params.id })
       .populate({

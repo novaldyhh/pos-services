@@ -28,10 +28,22 @@ const Item = new mongoose.Schema(
       ref: "Branches",
       required: true,
     },
+    brand: {
+      type: Schema.Types.ObjectId,
+      ref: "Brands",
+    },
     supplier: {
       type: Schema.Types.ObjectId,
       ref: "Suppliers",
       required: true,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Categories",
+    },
+    subCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SubCategories",
     },
   },
   { timestamps: true }

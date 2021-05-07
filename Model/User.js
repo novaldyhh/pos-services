@@ -33,18 +33,14 @@ const User = new mongoose.Schema({
     type: String,
     required: true,
   },
-  branch: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Branches",
-    },
-  ],
-  role: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Roles",
-    },
-  ],
+  branch: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Branches",
+  },
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Roles",
+  },
 });
 
 module.exports = mongoose.model("Users", User);
