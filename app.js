@@ -28,6 +28,7 @@ const ItemsController = require("./Controller/itemsController");
 const CategoryController = require("./Controller/CategoryController");
 const SubCategoryController = require("./Controller/SubCategoryController");
 const BrandController = require("./Controller/BrandController");
+const PurchaseController = require("./Controller/PurchaseController");
 
 app.use("/branch", BranchController);
 app.use("/user", UserController);
@@ -37,6 +38,7 @@ app.use("/items", ItemsController);
 app.use("/categories", CategoryController);
 app.use("/subcategory", SubCategoryController);
 app.use("/brand", BrandController);
+app.use("/purchase", PurchaseController);
 
 app.listen(activePort, () => {
   console.log("Server is running in " + activePort);

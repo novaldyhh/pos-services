@@ -13,24 +13,20 @@ router.post("/add", async (req, res) => {
     if (verifyUsername && isAdmin) return res.status(400).send("Username Gaboleh Sama");
   }
   try {
-    console.log("Running Service");
     const salt = await bcrypt.genSalt(10);
     var hash = null;
     if (req.body.password) {
       hash = await bcrypt.hash(req.body.password, salt);
     }
+
+    const isAdmin = req.body.isAdmin;
+
     const user = new User({
-      isAdmin: req.body.isAdmin,
-      isActive: req.body.isActive,
-      username: req.body.username,
-      password: hash,
-      email: req.body.email,
-      phone: req.body.phone,
-      address: req.body.address,
-      name: req.body.name,
-      branch: req.body.branch,
-      role: req.body.role,
+      ...req.body,
+      username: isAdmin === true ? req.body.username : "",
+      password: isAdmin === true ? hash : null,
     });
+    console.log(user);
     await user.save();
 
     const branch = await Branch.findById({ _id: user.branch });
@@ -43,7 +39,7 @@ router.post("/add", async (req, res) => {
 
     res.status(201).json({ messages: "User Ditambahkan", data: user });
   } catch (err) {
-    res.status(400).send("DB Error");
+    res.status(400).json({ messages: "Sistem Error Ulangi Beberapa Saat Lagi" });
   }
 });
 

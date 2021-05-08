@@ -32,6 +32,19 @@ router.get("/get", function (req, res, next) {
     });
 });
 
+router.get("/list/:id", async (req, res, next) => {
+  try {
+    await Category.findById({ _id: req.params.id })
+      .populate({
+        path: "subCategories",
+        select: "subCategoryName",
+      })
+      .then((data) => {
+        res.json(data.subCategories);
+      });
+  } catch (err) {}
+});
+
 router.get("/get/:id", function (req, res, next) {
   SubCategory.findOne({ _id: req.params.id })
     .then((subCategory) => {
