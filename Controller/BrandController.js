@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const Brand = require("../Model/Brand");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const verify = await Brand.findOne({ brandName: req.body.brandName });
   if (verify) {
     return res.status(400).send("Nama Kategori Tidak Boleh Sama");
@@ -15,7 +16,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/get", function (req, res, next) {
+router.get("/get", auth, function (req, res, next) {
   Brand.find()
     .then((brand) => {
       res.json(brand);
@@ -26,7 +27,7 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.get("/get/:id", function (req, res, next) {
+router.get("/get/:id", auth, function (req, res, next) {
   Brand.findOne({ _id: req.params.id })
     .then((brand) => {
       if (brand) {
@@ -40,7 +41,7 @@ router.get("/get/:id", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", auth, async (req, res) => {
   const items = await Brand.findOne({ items: req.body.items });
   if (items !== []) {
     res.status(400).json({ message: "Masih ada item terdaftar" });

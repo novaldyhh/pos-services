@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const Branch = require("../Model/Branch");
 const Item = require("../Model/Items");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   try {
     const branch = new Branch(req.body);
     const saved = await branch.save();
@@ -12,8 +13,8 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/get", function (req, res, next) {
-  Branch.find()
+router.get("/get", auth, async function (req, res, next) {
+  await Branch.find()
     .then((branch) => {
       res.json(branch);
     })
@@ -23,8 +24,8 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.get("/get/:id", function (req, res, next) {
-  Branch.findOne({ _id: req.params.id })
+router.get("/get/:id", auth, async function (req, res, next) {
+  await Branch.findOne({ _id: req.params.id })
     .then((branch) => {
       if (branch) {
         res.json(branch);
@@ -37,19 +38,21 @@ router.get("/get/:id", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", function (req, res) {
-  Branch.deleteOne({ _id: req.params.id })
+router.delete("/delete/:id", auth, async (req, res) => {
+  const branch = await Branch.findOne({ _id: req.params.id });
+  const users = branch.users;
+  if (users.length !== 0) return res.status(500).send("Data Tidak Bisa Dihapus");
+  await Branch.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });
     })
     .catch((err) => {
       res.send("error: " + err);
-      console.log(err);
     });
 });
 
-router.put("/edit/:id", function (req, res) {
-  Branch.updateOne(
+router.put("/edit/:id", auth, async function (req, res) {
+  await Branch.updateOne(
     { _id: req.params.id },
     {
       branchName: req.body.branchName,
@@ -69,8 +72,8 @@ router.put("/edit/:id", function (req, res) {
     });
 });
 
-router.put("/close/:id", function (req, res) {
-  Branch.updateOne(
+router.put("/close/:id", auth, async function (req, res) {
+  await Branch.updateOne(
     { _id: req.params.id },
     {
       isOpen: req.body.isOpen,

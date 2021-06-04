@@ -5,8 +5,9 @@ const Category = require("../Model/Category");
 const Items = require("../Model/Items");
 const SubCategory = require("../Model/SubCategory");
 const Supplier = require("../Model/Supplier");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   try {
     const item = new Items(req.body);
     await item.save();
@@ -37,7 +38,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/list/:id", async (req, res, next) => {
+router.get("/list/:id", auth, async (req, res, next) => {
   try {
     await Branch.findById({ _id: req.params.id })
       .populate({
@@ -52,7 +53,7 @@ router.get("/list/:id", async (req, res, next) => {
   }
 });
 
-router.get("/get/:id", function (req, res, next) {
+router.get("/get/:id", auth, function (req, res, next) {
   Items.findOne({ _id: req.params.id })
     .then((item) => {
       if (item) {
@@ -66,7 +67,7 @@ router.get("/get/:id", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", function (req, res) {
+router.delete("/delete/:id", auth, function (req, res) {
   Items.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });

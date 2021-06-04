@@ -5,8 +5,9 @@ const jwt = require("jsonwebtoken");
 const Role = require("../Model/Role");
 const Branch = require("../Model/Branch");
 const key = process.env.KEY;
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const verifyUsername = await User.findOne({ username: req.body.username });
   if (verifyUsername) {
     const isAdmin = verifyUsername.isAdmin;
@@ -26,7 +27,6 @@ router.post("/add", async (req, res) => {
       username: isAdmin === true ? req.body.username : "",
       password: isAdmin === true ? hash : null,
     });
-    console.log(user);
     await user.save();
 
     const branch = await Branch.findById({ _id: user.branch });
@@ -43,7 +43,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/get", function (req, res, next) {
+router.get("/get", auth, function (req, res, next) {
   User.find()
     .then((user) => {
       res.json(user);
@@ -54,7 +54,7 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", function (req, res) {
+router.delete("/delete/:id", auth, function (req, res) {
   User.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });
@@ -65,7 +65,7 @@ router.delete("/delete/:id", function (req, res) {
     });
 });
 
-router.get("/get/:id", function (req, res, next) {
+router.get("/get/:id", auth, function (req, res, next) {
   User.findOne({ _id: req.params.id })
     .then((user) => {
       if (user) {

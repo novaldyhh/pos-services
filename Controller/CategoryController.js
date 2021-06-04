@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const Category = require("../Model/Category");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const verify = await Category.findOne({ categoryName: req.body.categoryName });
   if (verify) {
     return res.status(400).send("Nama Kategori Tidak Boleh Sama");
@@ -15,7 +16,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/get", function (req, res, next) {
+router.get("/get", auth, function (req, res, next) {
   Category.find()
     .then((category) => {
       res.json(category);
@@ -26,7 +27,7 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.get("/get/:id", function (req, res, next) {
+router.get("/get/:id", auth, function (req, res, next) {
   Category.findOne({ _id: req.params.id })
     .then((category) => {
       if (category) {
@@ -40,7 +41,7 @@ router.get("/get/:id", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", function (req, res) {
+router.delete("/delete/:id", auth, function (req, res) {
   Category.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });

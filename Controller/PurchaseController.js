@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const Purchase = require("../Model/Purchase");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   try {
     const purchase = new Purchase(req.body);
     const saved = await purchase.save();
@@ -11,12 +12,11 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.post("/bulkAdd", function (req, res) {
+router.post("/bulkAdd", auth, function (req, res) {
   try {
     var items = req.body.purchaseData;
     var bulk = Purchase.collection.initializeUnorderedBulkOp();
     for (var i = 0; i < items.length; i += 1) {
-      console.log(i);
       bulk.insert(items[i]);
     }
     bulk.execute(function (errs) {
@@ -30,7 +30,7 @@ router.post("/bulkAdd", function (req, res) {
   }
 });
 
-router.get("/get", function (req, res, next) {
+router.get("/get", auth, function (req, res, next) {
   Purchase.find()
     .then((purchase) => {
       res.json(purchase);
@@ -41,7 +41,7 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.get("/get/:id", function (req, res, next) {
+router.get("/get/:id", auth, function (req, res, next) {
   Purchase.findOne({ _id: req.params.id })
     .then((purchase) => {
       if (purchase) {
@@ -55,7 +55,7 @@ router.get("/get/:id", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", auth, async (req, res) => {
   const items = await Purchase.findOne({ items: req.body.items });
   if (items !== []) {
     res.status(400).json({ message: "Masih ada item terdaftar" });

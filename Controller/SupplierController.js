@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const Supplier = require("../Model/Supplier");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const supplier = new Supplier({
     ...req.body,
   });
@@ -13,7 +14,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/get", function (req, res, next) {
+router.get("/get", auth, function (req, res, next) {
   Supplier.find()
     .then((supplier) => {
       res.json(supplier);
@@ -24,7 +25,7 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.get("/get/:id", function (req, res, next) {
+router.get("/get/:id", auth, function (req, res, next) {
   Supplier.findOne({ _id: req.params.id })
     .then((supplier) => {
       if (supplier) {
@@ -38,7 +39,7 @@ router.get("/get/:id", function (req, res, next) {
     });
 });
 
-router.delete("/delete/:id", function (req, res) {
+router.delete("/delete/:id", auth, function (req, res) {
   Supplier.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });

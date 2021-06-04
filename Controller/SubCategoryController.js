@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const SubCategory = require("../Model/SubCategory");
 const Category = require("../Model/Category");
+const auth = require("../Helper/jwt-handler");
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const verify = await SubCategory.findOne({ subCategoryName: req.body.subCategoryName });
   if (verify) {
     return res.status(400).send("Nama Sub Kategori Tidak Boleh Sama");
@@ -21,7 +22,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/get", function (req, res, next) {
+router.get("/get", auth, function (req, res, next) {
   SubCategory.find()
     .then((subCategory) => {
       res.json(subCategory);
@@ -32,7 +33,7 @@ router.get("/get", function (req, res, next) {
     });
 });
 
-router.get("/list/:id", async (req, res, next) => {
+router.get("/list/:id", auth, async (req, res, next) => {
   try {
     await Category.findById({ _id: req.params.id })
       .populate({
