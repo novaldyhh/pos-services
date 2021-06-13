@@ -6,6 +6,12 @@ const Role = new mongoose.Schema({
     type: String,
     required: true,
   },
+  fees: {
+    type: Number,
+  },
+  basicSalary: {
+    type: Number,
+  },
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
 });
 module.exports = mongoose.model("Roles", Role);

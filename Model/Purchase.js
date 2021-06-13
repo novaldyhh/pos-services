@@ -5,7 +5,11 @@ const Purchase = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  Coa: { type: mongoose.Schema.Types.ObjectId, ref: "Coas" },
+  status: {
+    type: String,
+    required: true,
+  },
+  coa: { type: mongoose.Schema.Types.ObjectId, ref: "Coas" },
   items: { type: mongoose.Schema.Types.ObjectId, ref: "Items" },
   admin: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
   supplier: { type: mongoose.Schema.Types.ObjectId, ref: "Suppliers" },
