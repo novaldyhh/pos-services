@@ -15,7 +15,6 @@ const Item = new mongoose.Schema(
     },
     quantity: {
       type: Number,
-      required: true,
     },
     minimumStock: {
       type: Number,
@@ -30,27 +29,34 @@ const Item = new mongoose.Schema(
     totalValue: {
       type: Number,
     },
+    brand: {
+      type: String,
+    },
+    categoryName: {
+      type: String,
+    },
+    coaName: {
+      type: String,
+    },
+    supplierName: {
+      type: String,
+    },
     branch: {
       type: Schema.Types.ObjectId,
       ref: "Branches",
       required: true,
     },
-    brand: {
+    coa: {
       type: Schema.Types.ObjectId,
-      ref: "Brands",
+      ref: "Suppliers",
     },
     supplier: {
       type: Schema.Types.ObjectId,
       ref: "Suppliers",
-      required: true,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Categories",
-    },
-    subCategory: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "SubCategories",
     },
   },
   { timestamps: true }

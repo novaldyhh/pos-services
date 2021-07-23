@@ -39,6 +39,24 @@ router.get("/get/:id", auth, function (req, res, next) {
     });
 });
 
+router.put("/edit/:id", auth, async function (req, res) {
+  await Role.updateOne(
+    { _id: req.params.id },
+    {
+      role: req.body.role,
+      fees: req.body.fees,
+      basicSalary: req.body.basicSalary,
+    }
+  )
+    .then(() => {
+      console.log(req.body);
+      res.send(req.body);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
 router.delete("/delete/:id", auth, function (req, res) {
   Role.deleteOne({ _id: req.params.id })
     .then(() => {

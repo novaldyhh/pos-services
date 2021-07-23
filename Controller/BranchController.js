@@ -41,7 +41,8 @@ router.get("/get/:id", auth, async function (req, res, next) {
 router.delete("/delete/:id", auth, async (req, res) => {
   const branch = await Branch.findOne({ _id: req.params.id });
   const users = branch.users;
-  if (users.length !== 0) return res.status(500).send("Data Tidak Bisa Dihapus");
+  if (users.length !== 0)
+    return res.status(500).send("Data Tidak Bisa Dihapus");
   await Branch.deleteOne({ _id: req.params.id })
     .then(() => {
       res.json({ status: "Data is Destroyed" });
@@ -52,20 +53,9 @@ router.delete("/delete/:id", auth, async (req, res) => {
 });
 
 router.put("/edit/:id", auth, async function (req, res) {
-  await Branch.updateOne(
-    { _id: req.params.id },
-    {
-      branchName: req.body.branchName,
-      isMainBranch: req.body.branchName,
-      phone: req.body.phone,
-      email: req.body.email,
-      address: req.body.address,
-      isOpen: req.body.isOpen,
-      postalCode: req.body.postalCode,
-    }
-  )
+  await Branch.updateOne({ _id: req.params.id }, { ...req.body })
     .then(() => {
-      res.json(req.body);
+      res.json({ messages: "Data Berubah", data: req.body });
     })
     .catch((err) => {
       res.send(err);

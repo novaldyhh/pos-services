@@ -16,17 +16,9 @@ router.post("/add", auth, async (req, res) => {
     branch.items.push(item);
     await branch.save();
 
-    const brand = await Brand.findById({ _id: item.brand });
-    brand.items.push(item);
-    await brand.save();
-
     const category = await Category.findById({ _id: item.category });
     category.items.push(item);
     await category.save();
-
-    const subCategory = await SubCategory.findById({ _id: item.subCategory });
-    subCategory.items.push(item);
-    await subCategory.save();
 
     const supplier = await Supplier.findById({ _id: item.supplier });
     supplier.items.push(item);
@@ -43,7 +35,8 @@ router.get("/list/:id", auth, async (req, res, next) => {
     await Branch.findById({ _id: req.params.id })
       .populate({
         path: "items",
-        select: "itemName serialNumber barcode quantity price totalValue",
+        select:
+          "itemName serialNumber barcode brand minimumStock coaName categoryName supplierName",
       })
       .then((data) => {
         res.json(data.items);
@@ -51,6 +44,16 @@ router.get("/list/:id", auth, async (req, res, next) => {
   } catch (err) {
     res.send("DB Error");
   }
+});
+
+router.put("/edit/:id", auth, async function (req, res) {
+  await Items.updateOne({ _id: req.params.id }, { ...req.body })
+    .then(() => {
+      res.json({ messages: "Data Berubah", data: req.body });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 });
 
 router.get("/get/:id", auth, function (req, res, next) {

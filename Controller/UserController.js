@@ -11,7 +11,8 @@ router.post("/add", auth, async (req, res) => {
   const verifyUsername = await User.findOne({ username: req.body.username });
   if (verifyUsername) {
     const isAdmin = verifyUsername.isAdmin;
-    if (verifyUsername && isAdmin) return res.status(400).send("Username Gaboleh Sama");
+    if (verifyUsername && isAdmin)
+      return res.status(400).send("Username Tidak Boleh Sama");
   }
   try {
     const salt = await bcrypt.genSalt(10);
@@ -37,9 +38,11 @@ router.post("/add", auth, async (req, res) => {
     role.users.push(user);
     await role.save();
 
+    console.log(user);
+
     res.status(201).json({ messages: "User Ditambahkan", data: user });
   } catch (err) {
-    res.status(400).json({ messages: "Sistem Error Ulangi Beberapa Saat Lagi" });
+    res.status(400).send(err);
   }
 });
 
@@ -51,6 +54,16 @@ router.get("/get", auth, function (req, res, next) {
     })
     .catch((err) => {
       res.send("error: " + err);
+    });
+});
+
+router.put("/edit/:id", auth, async function (req, res) {
+  await User.updateOne({ _id: req.params.id }, { ...req.body })
+    .then(() => {
+      res.json("Data Berubah: " + req.body);
+    })
+    .catch((err) => {
+      res.send(err);
     });
 });
 
@@ -82,7 +95,10 @@ router.get("/get/:id", auth, function (req, res, next) {
 
 router.post("/login", async (req, res) => {
   const username = await User.findOne({ username: req.body.username });
-  if (!username) return res.status(400).send("Login Gagal");
+  if (!username)
+    return res
+      .status(400)
+      .json({ status: 400, messages: "Pengguna Tidak Ditemukan" });
 
   const roleId = username.role;
   const branchId = username.branch;
@@ -90,12 +106,21 @@ router.post("/login", async (req, res) => {
   const role = await Role.findOne({ _id: roleId }).populate("Roles");
   const branch = await Branch.findOne({ _id: branchId }).populate("Branch");
 
-  const checkPassword = await bcrypt.compare(req.body.password, username.password);
-  if (!checkPassword) return res.status(400).send("Login Gagal");
+  console.log(username.password + " and " + req.body.password);
+
+  const checkPassword = await bcrypt.compare(
+    req.body.password,
+    username.password
+  );
+  if (!checkPassword)
+    return res
+      .status(400)
+      .json({ status: 400, messages: "Pengguna Tidak Ditemukan" });
 
   const token = jwt.sign({ _id: username.id }, key);
   res.json({
     token: token,
+    name: username.name,
     role: role.role,
     branchId: branchId,
     branch: branch.branchName,

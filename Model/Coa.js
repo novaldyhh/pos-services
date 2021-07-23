@@ -5,12 +5,18 @@ const Coa = new mongoose.Schema({
     type: String,
     required: true,
   },
-  coaCode: {
-    type: Number,
+  coaCategoryName: {
+    type: String,
     required: true,
-    default: 0,
   },
-  CoaCategory: { type: mongoose.Schema.Types.ObjectId, ref: "CoaCategories" },
+  coaCode: {
+    type: String,
+    required: true,
+  },
+  coaCategory: { type: mongoose.Schema.Types.ObjectId, ref: "CoaCategories" },
   Purchase: [{ type: mongoose.Schema.Types.ObjectId, ref: "Purchases" }],
+  productCategory: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Categories" },
+  ],
 });
 module.exports = mongoose.model("Coas", Coa);

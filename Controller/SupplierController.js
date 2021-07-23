@@ -50,4 +50,14 @@ router.delete("/delete/:id", auth, function (req, res) {
     });
 });
 
+router.put("/edit/:id", auth, async function (req, res) {
+  await Supplier.updateOne({ _id: req.params.id }, { ...req.body })
+    .then(() => {
+      res.json("Data Berubah: " + req.body);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
 module.exports = router;
